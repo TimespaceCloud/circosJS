@@ -24,7 +24,7 @@ function renderLayoutLabels (conf, block) {
   label.append('textPath')
     .attr('startOffset', '25%')
     .attr('xlink:href', (d) => '#arc-label' + d.id)
-    .style('fill', conf.labels.color)
+    .style('fill', (d) => d.labelColor || conf.labels.color)
     .text((d) => d.label)
 }
 
@@ -84,7 +84,7 @@ function renderLayoutTicks (conf, layout, instance) {
     )
     .style('text-anchor', (d) => d.angle > Math.PI ? 'end' : null)
     .style('font-size', '' + conf.ticks.labelSize + 'px')
-    .style('fill', conf.ticks.labelColor)
+    .style('fill', (d) => d.tickColor || conf.ticks.labelColor)
     .text((d) => d.label)
 }
 

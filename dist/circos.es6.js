@@ -4597,12 +4597,12 @@ function nap() {
 function sleep(time) {
   if (frame) return; // Soonest alarm already set, or will be.
   if (timeout) timeout = clearTimeout(timeout);
-  var delay = time - clockNow;
+  var delay = time - clockNow; // Strictly less than if we recomputed clockNow.
   if (delay > 24) {
-    if (time < Infinity) timeout = setTimeout(wake, delay);
+    if (time < Infinity) timeout = setTimeout(wake, time - clock.now() - clockSkew);
     if (interval) interval = clearInterval(interval);
   } else {
-    if (!interval) clockLast = clockNow, interval = setInterval(poke, pokeDelay);
+    if (!interval) clockLast = clock.now(), interval = setInterval(poke, pokeDelay);
     frame = 1, setFrame(wake);
   }
 }
@@ -14524,7 +14524,9 @@ function renderLayoutLabels(conf, block) {
   // http://stackoverflow.com/questions/20447106/how-to-center-horizontal-and-vertical-text-along-an-textpath-inside-an-arc-usi
   label.append('textPath').attr('startOffset', '25%').attr('xlink:href', function (d) {
     return '#arc-label' + d.id;
-  }).style('fill', conf.labels.color).text(function (d) {
+  }).style('fill', function (d) {
+    return d.labelColor || conf.labels.color;
+  }).text(function (d) {
     return d.label;
   });
 }
@@ -14569,7 +14571,9 @@ function renderLayoutTicks(conf, layout, instance) {
     return d.angle > Math.PI ? 'rotate(180)translate(-16)' : null;
   }).style('text-anchor', function (d) {
     return d.angle > Math.PI ? 'end' : null;
-  }).style('font-size', '' + conf.ticks.labelSize + 'px').style('fill', conf.ticks.labelColor).text(function (d) {
+  }).style('font-size', '' + conf.ticks.labelSize + 'px').style('fill', function (d) {
+    return d.tickColor || conf.ticks.labelColor;
+  }).text(function (d) {
     return d.label;
   });
 }
@@ -23805,7 +23809,7 @@ var scheme = new Array(3).concat(
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.renderAxes = undefined;
+exports.renderAxes = exports._buildAxesData = undefined;
 
 var _range = __webpack_require__(586);
 
@@ -23832,7 +23836,7 @@ var _buildAxisData = function _buildAxisData(value, axesGroup, conf) {
   };
 };
 
-var _buildAxesData = function _buildAxesData(conf) {
+var _buildAxesData = exports._buildAxesData = function _buildAxesData(conf) {
   return (0, _reduce2.default)(conf.axes, function (aggregator, axesGroup) {
     if (!axesGroup.position && !axesGroup.spacing) {
       _logger2.default.warn('Skipping axe group with no position and spacing defined');
