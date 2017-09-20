@@ -8,3 +8,4 @@ vendors
 *.log
 coverage.html
 coverage
+.atom-build.yml

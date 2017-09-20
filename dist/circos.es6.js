@@ -14586,7 +14586,12 @@ function renderLayout(parentElement, instance) {
 
   var block = layout.selectAll('g').data(instance._layout.data).enter().append('g').attr('class', function (d) {
     return d.id;
-  }).attr('opacity', conf.opacity);
+  }).attr('opacity', conf.opacity).attr('cursor', function (d) {
+    return d.cursor;
+  }).on('click', function (d) {
+    if (!d.onClick) return;
+    d.onClick(d);
+  });
 
   var entry = (0, _d3Shape.arc)().innerRadius(conf.innerRadius).outerRadius(conf.outerRadius).cornerRadius(conf.cornerRadius).startAngle(function (d) {
     return d.start;
@@ -14596,6 +14601,10 @@ function renderLayout(parentElement, instance) {
 
   block.append('path').attr('d', entry).attr('fill', function (d) {
     return d.color;
+  }).attr('stroke', function (d) {
+    return d.strokeColor;
+  }).attr('stroke-width', function (d) {
+    return d.strokeWidth;
   }).attr('id', function (d) {
     return d.id;
   });

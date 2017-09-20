@@ -105,6 +105,11 @@ export default function renderLayout (parentElement, instance) {
     .append('g')
     .attr('class', (d) => d.id)
     .attr('opacity', conf.opacity)
+    .attr('cursor', (d) => d.cursor)
+    .on('click', (d) => {
+        if (!d.onClick) return;
+        d.onClick(d)
+    } )
 
   const entry = arc()
     .innerRadius(conf.innerRadius)
@@ -116,6 +121,8 @@ export default function renderLayout (parentElement, instance) {
   block.append('path')
     .attr('d', entry)
     .attr('fill', (d) => d.color)
+    .attr('stroke', (d) => d.strokeColor )
+    .attr('stroke-width', (d) => d.strokeWidth )
     .attr('id', (d) => d.id)
 
   if (conf.labels.display) {
