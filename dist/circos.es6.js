@@ -1180,6 +1180,9 @@ var Track = function () {
 
       parentElement.select('.' + name).remove();
       var track = parentElement.append('g').attr('class', name).attr('z-index', this.conf.zIndex);
+      if (instance.conf.rotate) {
+        track.attr('transform', 'rotate(' + instance.conf.rotate + ')');
+      }
       var datumContainer = this.renderBlock(track, this.data, instance._layout, this.conf);
       if (this.conf.axes && this.conf.axes.length > 0) {
         (0, _axes.renderAxes)(datumContainer, this.conf, instance, this.scale);
