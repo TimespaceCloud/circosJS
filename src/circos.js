@@ -29,7 +29,7 @@ class Core {
     this.conf = defaultsDeep(conf, defaultConf)
     const container = select(this.conf.container).append('div')
       .style('position', 'relative')
-    this.svg = container.append('svg')
+    this.svg = conf.svg || container.append('svg')
     if (select('body').select('.circos-tooltip').empty()) {
       this.tip = select('body').append('div')
       .attr('class', 'circos-tooltip')

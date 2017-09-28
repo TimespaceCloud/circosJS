@@ -7870,6 +7870,7 @@ __webpack_require__(454);
 
 function registerTooltip(track, instance, element, trackParams) {
   track.dispatch.on('mouseover', function (d) {
+    if (!_d3Selection.event) return;
     instance.tip.html(trackParams.tooltipContent(d)).transition().style('opacity', 0.9).style('left', _d3Selection.event.pageX + 'px').style('top', _d3Selection.event.pageY - 28 + 'px');
   });
 
@@ -10148,7 +10149,7 @@ var Core = function () {
     this._layout = null;
     this.conf = (0, _defaultsDeep2.default)(conf, defaultConf);
     var container = (0, _d3Selection.select)(this.conf.container).append('div').style('position', 'relative');
-    this.svg = container.append('svg');
+    this.svg = conf.svg || container.append('svg');
     if ((0, _d3Selection.select)('body').select('.circos-tooltip').empty()) {
       this.tip = (0, _d3Selection.select)('body').append('div').attr('class', 'circos-tooltip').style('opacity', 0);
     } else {
@@ -14583,6 +14584,10 @@ function renderLayout(parentElement, instance) {
   parentElement.select('.cs-layout').remove();
 
   var layout = parentElement.append('g').attr('class', 'cs-layout').attr('z-index', conf.zIndex).on('click', conf.onClick);
+
+  if (instance.conf.rotate) {
+    layout.attr('transform', 'rotate(' + instance.conf.rotate + ')');
+  }
 
   var block = layout.selectAll('g').data(instance._layout.data).enter().append('g').attr('class', function (d) {
     return d.id;

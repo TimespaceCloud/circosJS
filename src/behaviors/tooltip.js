@@ -5,6 +5,7 @@ import './tooltip.css'
 
 export function registerTooltip (track, instance, element, trackParams) {
   track.dispatch.on('mouseover', (d) => {
+    if (!event) return;
     instance.tip
       .html(trackParams.tooltipContent(d))
       .transition()

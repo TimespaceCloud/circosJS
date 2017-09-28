@@ -98,6 +98,10 @@ export default function renderLayout (parentElement, instance) {
     .attr('z-index', conf.zIndex)
     .on('click', conf.onClick)
 
+  if ( instance.conf.rotate ) {
+    layout.attr( 'transform', 'rotate(' + instance.conf.rotate + ')' );
+  }
+
   const block = layout
     .selectAll('g')
     .data(instance._layout.data)
