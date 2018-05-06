@@ -7,10 +7,10 @@ export const initClipboard = (container) => {
       .attr('class', 'circos-clipboard')
       .attr('type', 'hidden')
 
-  select('body').on('keydown', () => {
+  /*select('body').on('keydown', () => {
     if (event.ctrlKey && event.code === 'KeyC') {
       clipboard.copy(input.attr('value'))
     }
-  })
+  })*/
   return input
 }

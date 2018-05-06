@@ -25450,11 +25450,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var initClipboard = exports.initClipboard = function initClipboard(container) {
   var input = (0, _d3Selection.select)(container).append('input').attr('class', 'circos-clipboard').attr('type', 'hidden');
 
-  (0, _d3Selection.select)('body').on('keydown', function () {
+  /*select('body').on('keydown', () => {
     if (event.ctrlKey && event.code === 'KeyC') {
-      _clipboardJs2.default.copy(input.attr('value'));
+      clipboard.copy(input.attr('value'))
     }
-  });
+  })*/
   return input;
 };
 
